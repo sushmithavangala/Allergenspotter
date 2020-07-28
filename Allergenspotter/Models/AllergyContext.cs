@@ -16,5 +16,7 @@ namespace Allergenspotter.Models
 
         public DbSet<AllergyData> AllergyData { get; set; }
 
+        public DbSet<AllergyMasterData> AllergyMasterData { get; set; }
+
     }
 }
