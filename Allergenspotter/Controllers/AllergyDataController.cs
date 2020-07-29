@@ -9,6 +9,7 @@ using Allergenspotter.Models;
 using Allergenspotter.Services;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
+using System.IO;
 
 namespace Allergenspotter.Controllers
 {
@@ -53,7 +54,13 @@ namespace Allergenspotter.Controllers
         [HttpPost("cvTest/{userId}")]
         public async Task<ActionResult<IEnumerable<String>>> GetOcrResult(String userId, [FromBody] ComputerVisionRequest cvRequest)
         {
-            var ingredients = await _cvService.BatchReadFileUrl(_client,cvRequest.ImageUrl);
+            var imgBytes = Convert.FromBase64String(cvRequest.Base64Image);
+            List<string> ingredients;
+            using (var ms = new MemoryStream(imgBytes))
+            {
+                ingredients = await _cvService.BatchReadFileUrl(_client, ms);
+            }
+                
             return ingredients;
         }
 
@@ -61,10 +68,18 @@ namespace Allergenspotter.Controllers
         // public async Task<ActionResult<IEnumerable<String>>> GetUserAllergyData(String userId, [FromBody] IngredientsData ingredientsData)
         public async Task<ActionResult<IEnumerable<String>>> GetUserAllergyData(String userId, [FromBody] ComputerVisionRequest cvRequest)
         {
-            var ingredients = await _cvService.BatchReadFileUrl(_client,cvRequest.ImageUrl);
-            var allergyData =  allergySpotterService.getAllergicIngredients(userId, ingredients);
+            //var ingredients = await _cvService.BatchReadFileUrl(_client,cvRequest.Base64Image);
+            //var allergyData =  allergySpotterService.getAllergicIngredients(userId, ingredients);
             // var allergyData =  allergySpotterService.getAllergicIngredients(userId, ingredientsData.ingredients);
 
+            var imgBytes = Convert.FromBase64String(cvRequest.Base64Image);
+            List<string> ingredients;
+            using (var ms = new MemoryStream(imgBytes))
+            {
+                ingredients = await _cvService.BatchReadFileUrl(_client, ms);
+            }
+
+            var allergyData = allergySpotterService.getAllergicIngredients(userId, ingredients);
             if (allergyData == null)
             {
                 return NotFound();
