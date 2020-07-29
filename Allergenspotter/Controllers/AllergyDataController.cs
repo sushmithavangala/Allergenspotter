@@ -129,17 +129,17 @@ namespace Allergenspotter.Controllers
 
             if (allergyData.Allergy3 != null)
             {
-                existingAllergyData.Allergy2 = allergyData.Allergy2;
+                existingAllergyData.Allergy3 = allergyData.Allergy3;
             }
 
             if (allergyData.Allergy4 != null)
             {
-                existingAllergyData.Allergy2 = allergyData.Allergy2;
+                existingAllergyData.Allergy4 = allergyData.Allergy4;
             }
 
             if (allergyData.Allergy5 != null)
             {
-                existingAllergyData.Allergy2 = allergyData.Allergy2;
+                existingAllergyData.Allergy5 = allergyData.Allergy5;
             }
         }
 
