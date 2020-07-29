@@ -31,14 +31,12 @@ namespace Allergenspotter.Controllers
             _client = client;
         }
 
-        // GET: api/AllergyData
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AllergyData>>> GetAllergyData()
         {
             return await _context.AllergyData.ToListAsync();
         }
 
-        // GET: api/AllergyData/5
         [HttpGet("{userId}")]
         public async Task<ActionResult<AllergyData>> GetAllergyData([System.Web.Http.FromUri] String userId)
         {
@@ -75,18 +73,23 @@ namespace Allergenspotter.Controllers
             return Ok(allergyData);
         }
 
-        // PUT: api/AllergyData/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{userId}")]
-        public async Task<IActionResult> PutAllergyData(String  userId, AllergyData allergyData)
+        [HttpPut]
+        public async Task<IActionResult> UpdateAllergyData(AllergyData allergyData)
         {
-            if (!userId.Equals(allergyData.UserId))
+            if (allergyData.UserId == null)
             {
-                return BadRequest();
+                return BadRequest("Error : user id mandatory");
             }
 
-            _context.Entry(allergyData).State = EntityState.Modified;
+            var existingAllergyData = await _context.AllergyData.FindAsync(allergyData.UserId);
+            if (existingAllergyData == null)
+            {
+                return BadRequest("Error : No user found with the user id used");
+            }
+            updateAllergyData(allergyData, existingAllergyData);
+
+            _context.Entry(existingAllergyData).State = EntityState.Modified;
+            _context.Entry(existingAllergyData).Property(x => x.Id).IsModified = false;
 
             try
             {
@@ -94,7 +97,7 @@ namespace Allergenspotter.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AllergyDataExists(userId))
+                if (!AllergyDataExists(allergyData.UserId))
                 {
                     return NotFound();
                 }
@@ -104,22 +107,52 @@ namespace Allergenspotter.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(existingAllergyData);
         }
 
-        // POST: api/AllergyData
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        /*[HttpPost]
+        private static void updateAllergyData (AllergyData allergyData, AllergyData existingAllergyData)
+        {
+            if (allergyData.UserName != null)
+            {
+                existingAllergyData.UserName = allergyData.UserName;
+            }
+
+            if (allergyData.Allergy1 != null)
+            {
+                existingAllergyData.Allergy1 = allergyData.Allergy1;
+            }
+
+            if (allergyData.Allergy2 != null)
+            {
+                existingAllergyData.Allergy2 = allergyData.Allergy2;
+            }
+
+            if (allergyData.Allergy3 != null)
+            {
+                existingAllergyData.Allergy2 = allergyData.Allergy2;
+            }
+
+            if (allergyData.Allergy4 != null)
+            {
+                existingAllergyData.Allergy2 = allergyData.Allergy2;
+            }
+
+            if (allergyData.Allergy5 != null)
+            {
+                existingAllergyData.Allergy2 = allergyData.Allergy2;
+            }
+        }
+
+        [HttpPost]
         public async Task<ActionResult<AllergyData>> PostAllergyData(AllergyData allergyData)
         {
             _context.AllergyData.Add(allergyData);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetAllergyData", new { userId = allergyData.UserId }, allergyData);
-        }*/
+        }
 
-        // DELETE: api/AllergyData/5
+
         [HttpDelete("{userId}")]
         public async Task<ActionResult<AllergyData>> DeleteAllergyData(String userId)
         {
