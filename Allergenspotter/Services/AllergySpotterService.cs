@@ -19,7 +19,7 @@ namespace Allergenspotter.Services
         {
             List<String> userAllergies = _allergyDataRepository.getAllergies(userId);
 
-            return userAllergies.Intersect(ingredients);
+            return userAllergies.Intersect(ingredients, StringComparer.OrdinalIgnoreCase);
         }
     }
 }
