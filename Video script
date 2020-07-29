@@ -1,17 +1,15 @@
 Our Hackathon project is called Allergen Spotter. 
-Do you or someone you love have food allergies? Do you find yourself checking food labels and ingredients lists all the time? Allergen Spotter can help with that. 
-It's a web-based application for spotting allergies on food labels.  
+Do you or someone you know have food allergies? Do you find yourself checking food labels and ingredients lists all the time? 
+Allergen Spotter can help with that. It's web-based application for spotting allergies on food labels.  
+
+For Hackathon, our goal was to get a working proof of concept for this app using public APIs and Azure's Computer Vision.
 
 Checkout this demo to see how it works. 
 
-First create a profile and select your allergies from the list. 
-Please note that by creating a profile you are opting to allow this information to be saved in our database. 
-If you prefer not to create a profile, you can also use the application as a guest. 
+First select your allergies from the list, for now you can select upto 5 allergies. 
 
-Next, while in the app take a picture of the food label or ingredients list with your camera. 
+Next, take a picture of the food label or ingredients list with your web camera.  Click the Screen capture button to access your web cam and this button to take a picture.
 
-Click this button and TA DA!
+Let the app do its thing and...
 
-If any of your selected allergies are spotted, Allergen Spotter will let you know. 
-
-
+If any of your selected allergies are spotted, they'll show up in this section here. 
