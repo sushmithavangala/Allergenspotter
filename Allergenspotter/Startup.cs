@@ -8,6 +8,8 @@ using Allergenspotter.Models;
 using Allergenspotter.Services;
 using Allergenspotter.Repositories;
 using System;
+using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
+using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
 
 namespace Allergenspotter
 {
@@ -28,6 +30,16 @@ namespace Allergenspotter
               {
                   opt.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
               }));
+            services.AddSingleton<ComputerVisionClient>((opts) => {
+                string subscriptionKey = Environment.GetEnvironmentVariable("COMPUTER_VISION_SUBSCRIPTION_KEY");
+                string endpoint = Environment.GetEnvironmentVariable("COMPUTER_VISION_ENDPOINT");
+                var client = new ComputerVisionClient(new ApiKeyServiceClientCredentials(subscriptionKey))
+                {
+                    Endpoint = endpoint
+                };
+                return client;
+            });
+            services.AddSingleton<ComputerVisionService>();
             services.AddScoped<IAllergySpotterService, AllergySpotterService>();
             services.AddScoped<IAllergyDataRepository, AllergyDataRepository>();
             //:TODO make the above services singleton and see how dbcontext scope can be accesed in singletons.

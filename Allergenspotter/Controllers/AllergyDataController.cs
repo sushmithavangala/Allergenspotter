@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Allergenspotter.Models;
 using Allergenspotter.Services;
+using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
+using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
 
 namespace Allergenspotter.Controllers
 {
@@ -18,10 +20,15 @@ namespace Allergenspotter.Controllers
 
         private readonly IAllergySpotterService allergySpotterService;
 
-        public AllergyDataController(AllergyContext context, IAllergySpotterService allergySpotterService)
+        private readonly ComputerVisionClient _client;
+        private readonly ComputerVisionService _cvService;
+
+        public AllergyDataController(AllergyContext context, IAllergySpotterService allergySpotterService, ComputerVisionClient client, ComputerVisionService cvService)
         {
             _context = context;
             this.allergySpotterService = allergySpotterService;
+            _cvService = cvService;
+            _client = client;
         }
 
         // GET: api/AllergyData
@@ -45,10 +52,20 @@ namespace Allergenspotter.Controllers
             return allergyData;
         }
 
-        [HttpPost("{userId}")]
-        public async Task<ActionResult<IEnumerable<String>>> GetUserAllergyData(String userId, [FromBody] IngredientsData ingredientsData)
+        [HttpPost("cvTest/{userId}")]
+        public async Task<ActionResult<IEnumerable<String>>> GetOcrResult(String userId, [FromBody] ComputerVisionRequest cvRequest)
         {
-            var allergyData =  allergySpotterService.getAllergicIngredients(userId, ingredientsData.ingredients);
+            var ingredients = await _cvService.BatchReadFileUrl(_client,cvRequest.ImageUrl);
+            return ingredients;
+        }
+
+        [HttpPost("{userId}")]
+        // public async Task<ActionResult<IEnumerable<String>>> GetUserAllergyData(String userId, [FromBody] IngredientsData ingredientsData)
+        public async Task<ActionResult<IEnumerable<String>>> GetUserAllergyData(String userId, [FromBody] ComputerVisionRequest cvRequest)
+        {
+            var ingredients = await _cvService.BatchReadFileUrl(_client,cvRequest.ImageUrl);
+            var allergyData =  allergySpotterService.getAllergicIngredients(userId, ingredients);
+            // var allergyData =  allergySpotterService.getAllergicIngredients(userId, ingredientsData.ingredients);
 
             if (allergyData == null)
             {
