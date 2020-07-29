@@ -1,0 +1,35 @@
+/*Dairy*/
+
+  INSERT INTO allergymasterdata(AllergyName) VALUES ('milk'), ('milk powder'), ('cheese'), ('butter'), ('margarine'), ('yogurt'), ('cream'), ('ice cream') ;
+
+/*Nuts*/
+
+ INSERT INTO allergymasterdata(AllergyName) VALUES ('nut'), ('peanuts'), ('brazil nuts'), ('almonds'), ('cashews'), ('macadamia nuts'), ('pistachios'), ('pine nuts'), ('walnuts'), ('pecans') ; 
+
+/*Legumes*/
+
+ INSERT INTO allergymasterdata(AllergyName) VALUES ('chickpea'), ('peas'), ('lentil'), ('soy'), ('soybean');
+
+/*Shellfish*/
+
+ INSERT INTO allergymasterdata(AllergyName) VALUES ('shrimp'), ('prawns'), ('crab'), ('lobster'), ('oysters'), ('clams'), ('mussels'), ('scallops'), ('squid');
+
+/*Vegetables*/
+
+INSERT INTO allergymasterdata(AllergyName) VALUES ('asparagus'), ('avocado'), ('bell pepper'), ('cabbage'), ('carrot'), ('celery'),  ('lettuce'), ('potato'), ('pumpkin'), ('zucchini');
+
+/*Fruits*/
+
+INSERT INTO allergymasterdata(AllergyName) VALUES ('apple'), ('apricot'), ('banana'), ('blueberry'), ('cherry'), ('coconut'), ('grapes'), ('kiwi'), ('melon'), ('mango'), ('orange'), ('peach'), ('pear'), ('pineapple'), ('plum'), ('tomato');
+
+/*Fish*/
+
+ INSERT INTO allergymasterdata(AllergyName) VALUES ('salmon'), ('tuna'), ('cod'), ('mackerel'), ('sole'), ('trout');
+
+/*Wheat*/
+
+ INSERT INTO allergymasterdata(AllergyName) VALUES ('wheat');
+
+/*Eggs*/
+
+ INSERT INTO allergymasterdata(AllergyName) VALUES ('eggs');
