@@ -4,7 +4,7 @@ namespace Allergenspotter.Models
 {
     public class ComputerVisionRequest
     {
-        [JsonProperty("imageUrl")]
-        public string ImageUrl { get; set; }
+        [JsonProperty("base64Image")]
+        public string Base64Image { get; set; }
     }
 }

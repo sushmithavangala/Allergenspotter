@@ -30,13 +30,13 @@ namespace Allergenspotter.Services
         //     return client;
         // }
 
-        public async Task<List<string>> BatchReadFileUrl(ComputerVisionClient client, string urlImage)
+        public async Task<List<string>> BatchReadFileUrl(ComputerVisionClient client, Stream imgStream)
         {
             String fullTextResultList = "";
 
             // Read text from URL
             
-            var textHeaders = await client.BatchReadFileAsync(urlImage);
+            var textHeaders = await client.BatchReadFileInStreamAsync(imgStream);
             // After the request, get the operation location (operation ID)
             string operationLocation = textHeaders.OperationLocation;
 
